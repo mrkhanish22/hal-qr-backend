@@ -1,0 +1,13 @@
+package com.hal.hal;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+
+@SpringBootTest
+class HalApplicationTests {
+
+	@Test
+	void contextLoads() {
+	}
+
+}
