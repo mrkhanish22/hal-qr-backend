@@ -1,17 +1,19 @@
-# Use Java 17
-FROM eclipse-temurin:17-jdk
+# ---------- BUILD STAGE ----------
+FROM maven:3.9.6-eclipse-temurin-17 AS build
 
-# Set working directory
 WORKDIR /app
+COPY pom.xml .
+COPY src ./src
 
-# Copy everything
-COPY . .
-
-# Build using system Maven (not mvnw)
 RUN mvn clean package -DskipTests
 
-# Expose Spring Boot port
+
+# ---------- RUN STAGE ----------
+FROM eclipse-temurin:17-jdk
+
+WORKDIR /app
+COPY --from=build /app/target/hal-0.0.1-SNAPSHOT.jar app.jar
+
 EXPOSE 8080
 
-# Run the jar
-CMD ["java", "-jar", "target/hal-0.0.1-SNAPSHOT.jar"]
+CMD ["java", "-jar", "app.jar"]
